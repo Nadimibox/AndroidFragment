@@ -52,6 +52,12 @@ public class FragmentUtils {
         transaction.commit();
     }
 
+    public static void remove(FragmentActivity fragmentActivity , LiteFragment fragment){
+        FragmentTransaction transaction = fragmentActivity.getSupportFragmentManager().beginTransaction();
+        transaction.remove(fragment);
+        transaction.commit();
+    }
+
 
 
 }
