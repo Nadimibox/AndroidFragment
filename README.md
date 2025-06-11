@@ -16,6 +16,6 @@ repositories {
 ```` 
 dependencies {
       ...
-      implementation 'com.github.MrNadimi:AndroidFragment:1.0.1'
+      implementation 'com.github.Nadimibox:AndroidFragment:1.0.2'
 }
 ````
