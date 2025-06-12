@@ -1,4 +1,4 @@
-package com.mrnadimi.androidfragment;
+package com.nadimibox.androidfragment;
 
 import android.os.Bundle;
 

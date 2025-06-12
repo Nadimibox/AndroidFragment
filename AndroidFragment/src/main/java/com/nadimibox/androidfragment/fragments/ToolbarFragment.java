@@ -1,4 +1,4 @@
-package com.mrnadimi.androidfragment.fragments;
+package com.nadimibox.androidfragment.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.core.content.ContextCompat;
 
-import com.mrnadimi.androidfragment.LiteFragment;
+import com.nadimibox.androidfragment.LiteFragment;
 
 /**
  * Developer: Mohamad Nadimi

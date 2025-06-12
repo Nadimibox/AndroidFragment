@@ -1,4 +1,4 @@
-package com.mrnadimi.androidfragmentexp;
+package com.nadimibox.androidfragmentexp;
 
 import androidx.fragment.app.FragmentActivity;
 
