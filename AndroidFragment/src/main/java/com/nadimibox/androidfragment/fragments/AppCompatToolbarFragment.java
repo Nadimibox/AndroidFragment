@@ -1,5 +1,4 @@
 package com.nadimibox.androidfragment.fragments;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +17,6 @@ import com.nadimibox.androidfragment.LiteFragment;
 public abstract class AppCompatToolbarFragment extends LiteFragment {
 
     Toolbar toolbar;
-    boolean hasOptionsMenu;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,35 +31,19 @@ public abstract class AppCompatToolbarFragment extends LiteFragment {
         View view =  onCreateToolbarRootView(inflater , container , savedInstanceState);
         toolbar  = getToolbar(view);
         if (toolbar != null) {
-            invalidateToolbarMenu();
+            ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
         }
         return view;
     }
 
     public abstract View onCreateToolbarRootView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState);
 
-    private void invalidateToolbarMenu(){
-        toolbar.getMenu().clear();
-        if(hasOptionsMenu){
-            ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
-        }
-    }
 
     @Override
     public void setHasOptionsMenu(boolean hasMenu) {
         super.setHasOptionsMenu(hasMenu);
-        hasOptionsMenu=hasMenu;
-        invalidateOptionsMenu();
-    }
 
-    public void invalidateOptionsMenu(){
-        if(toolbar!=null){
-            invalidateToolbarMenu();
-        }else if(getActivity()!=null){
-            requireActivity().invalidateOptionsMenu();
-        }
     }
-
 
 
 
