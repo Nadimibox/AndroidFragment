@@ -2,31 +2,20 @@ package com.nadimibox.androidfragment.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toolbar;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentActivity;
 
 import com.nadimibox.androidfragment.LiteFragment;
 
-/**
- * Developer: Mohamad Nadimi
- * Company: Saghe
- * Website: https://www.mrnadimi.com
- * Created on 31 October 2021
- * <p>
- * Description: ...
- */
-public abstract class ToolbarFragment extends LiteFragment {
+public abstract class AppCompatToolbarFragment extends LiteFragment {
 
     Toolbar toolbar;
     boolean hasOptionsMenu;
@@ -45,7 +34,6 @@ public abstract class ToolbarFragment extends LiteFragment {
         toolbar  = getToolbar(view);
         if (toolbar != null) {
             invalidateToolbarMenu();
-            //(requireActivity()).setActionBar(toolbar);
         }
         return view;
     }
@@ -55,7 +43,7 @@ public abstract class ToolbarFragment extends LiteFragment {
     private void invalidateToolbarMenu(){
         toolbar.getMenu().clear();
         if(hasOptionsMenu){
-            onCreateOptionsMenu(toolbar.getMenu(), new MenuInflater(requireActivity()));
+            ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
         }
     }
 
