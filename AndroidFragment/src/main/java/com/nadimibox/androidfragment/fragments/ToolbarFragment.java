@@ -6,15 +6,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toolbar;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentActivity;
 
 import com.nadimibox.androidfragment.LiteFragment;
 
@@ -29,6 +27,7 @@ import com.nadimibox.androidfragment.LiteFragment;
 public abstract class ToolbarFragment extends LiteFragment {
 
     Toolbar toolbar;
+    boolean hasOptionsMenu;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,12 +42,40 @@ public abstract class ToolbarFragment extends LiteFragment {
         View view =  onCreateToolbarRootView(inflater , container , savedInstanceState);
         toolbar  = getToolbar(view);
         if (toolbar != null) {
-            (requireActivity()).setActionBar(toolbar);
+            invalidateToolbarMenu();
+            toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    return onOptionsItemSelected(item);
+                }
+            });
         }
         return view;
     }
 
     public abstract View onCreateToolbarRootView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState);
+
+    private void invalidateToolbarMenu(){
+        toolbar.getMenu().clear();
+        if(hasOptionsMenu){
+            onCreateOptionsMenu(toolbar.getMenu(), new MenuInflater(requireActivity()));
+        }
+    }
+
+    @Override
+    public void setHasOptionsMenu(boolean hasMenu) {
+        super.setHasOptionsMenu(hasMenu);
+        hasOptionsMenu=hasMenu;
+        invalidateOptionsMenu();
+    }
+
+    public void invalidateOptionsMenu(){
+        if(toolbar!=null){
+            invalidateToolbarMenu();
+        }else if(getActivity()!=null){
+            requireActivity().invalidateOptionsMenu();
+        }
+    }
 
 
 

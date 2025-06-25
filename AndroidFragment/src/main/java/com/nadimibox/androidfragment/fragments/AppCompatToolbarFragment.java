@@ -1,6 +1,7 @@
 package com.nadimibox.androidfragment.fragments;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -31,7 +32,12 @@ public abstract class AppCompatToolbarFragment extends LiteFragment {
         View view =  onCreateToolbarRootView(inflater , container , savedInstanceState);
         toolbar  = getToolbar(view);
         if (toolbar != null) {
-            ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
+            toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    return onOptionsItemSelected(item);
+                }
+            });
         }
         return view;
     }
