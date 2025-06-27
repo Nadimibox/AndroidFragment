@@ -1,14 +1,12 @@
 package com.nadimibox.androidfragment.fragments;
-
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.DrawableRes;
+import androidx.annotation.MenuRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -17,18 +15,9 @@ import androidx.core.content.ContextCompat;
 
 import com.nadimibox.androidfragment.LiteFragment;
 
-/**
- * Developer: Mohamad Nadimi
- * Company: Saghe
- * Website: https://www.mrnadimi.com
- * Created on 31 October 2021
- * <p>
- * Description: ...
- */
-public abstract class ToolbarFragment extends LiteFragment {
+public abstract class ToolbarFragment extends LiteFragment implements Toolbar.OnMenuItemClickListener {
 
     Toolbar toolbar;
-    boolean hasOptionsMenu;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,67 +25,64 @@ public abstract class ToolbarFragment extends LiteFragment {
         setHasOptionsMenu(true);
     }
 
-    public abstract Toolbar getToolbar(View rootView);
+
 
     @Override
     public final View onCreateRootView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view =  onCreateToolbarRootView(inflater , container , savedInstanceState);
         toolbar  = getToolbar(view);
         if (toolbar != null) {
-            invalidateToolbarMenu();
-            toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    return onOptionsItemSelected(item);
-                }
-            });
+            toolbar.getMenu().clear();
+            if (getMenuRes() != -1){
+                toolbar.inflateMenu(getMenuRes());
+                toolbar.setOnMenuItemClickListener(this);
+            }
+
         }
         return view;
     }
 
     public abstract View onCreateToolbarRootView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState);
 
-    private void invalidateToolbarMenu(){
-        toolbar.getMenu().clear();
-        if(hasOptionsMenu){
-            onCreateOptionsMenu(toolbar.getMenu(), new MenuInflater(requireActivity()));
-        }
+
+    public abstract Toolbar getToolbar(View rootView);
+
+    /**
+     * Override when you have menu in toolbar
+     * @return the menu resource id
+     */
+    @MenuRes
+    public int getMenuRes(){
+        return -1;
     }
 
-    @Override
-    public void setHasOptionsMenu(boolean hasMenu) {
-        super.setHasOptionsMenu(hasMenu);
-        hasOptionsMenu=hasMenu;
-        invalidateOptionsMenu();
-    }
-
-    public void invalidateOptionsMenu(){
-        if(toolbar!=null){
-            invalidateToolbarMenu();
-        }else if(getActivity()!=null){
-            requireActivity().invalidateOptionsMenu();
-        }
+    /**
+     *
+     * @param item {@link MenuItem} that was clicked
+     * @return Override when you have menu in toolbar
+     */
+    public boolean onMenuItemClick(MenuItem item){
+        return false;
     }
 
 
 
-
-    public void setTitle(String title){
+    public final void setTitle(String title){
         if (toolbar == null)return;
         this.toolbar.setTitle(title);
     }
 
-    public void setTitle(@StringRes int title){
+    public final void setTitle(@StringRes int title){
         if (toolbar == null)return;
         this.toolbar.setTitle(title);
     }
 
-    public void setSubtitle(String subTitle){
+    public final void setSubtitle(String subTitle){
         if (toolbar == null)return;
         this.toolbar.setSubtitle(subTitle);
     }
 
-    public void setSubtitle(@StringRes int subTitle){
+    public final void setSubtitle(@StringRes int subTitle){
         if (toolbar == null)return;
         this.toolbar.setSubtitle(subTitle);
     }
@@ -105,26 +91,26 @@ public abstract class ToolbarFragment extends LiteFragment {
      * Navigation icon like back button
      * @param icon: Icon res
      */
-    public void setNavigationIcon(@DrawableRes int icon){
+    public final void setNavigationIcon(@DrawableRes int icon){
         if (toolbar == null)return;
         toolbar.setNavigationIcon(ContextCompat.getDrawable(requireContext() , icon));
     }
 
-    public void setNavigationIconClickListener(View.OnClickListener onClickListener){
+    public final void setNavigationIconClickListener(View.OnClickListener onClickListener){
         if (toolbar == null)return;
         toolbar.setNavigationOnClickListener(onClickListener);
     }
 
     /**
-     * Remove navigation icon like back button
+     * Remove navigation icon like back butoon
      */
-    public void removeNavigationIcon(){
+    public final void removeNavigationIcon(){
         if (toolbar == null)return;
         toolbar.setNavigationIcon(null);
         toolbar.setOnClickListener(null);
     }
 
-    public void setElevation(float elevation){
+    public final void setElevation(float elevation){
         if (toolbar == null)return;
         toolbar.setElevation(elevation);
     }
