@@ -1,6 +1,7 @@
 package com.nadimibox.androidfragment.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -115,7 +116,7 @@ public abstract class ToolbarFragment extends LiteFragment {
     }
 
     /**
-     * Remove navigation icon like back butoon
+     * Remove navigation icon like back button
      */
     public void removeNavigationIcon(){
         if (toolbar == null)return;
