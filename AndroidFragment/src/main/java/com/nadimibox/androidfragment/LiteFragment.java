@@ -1,6 +1,8 @@
 package com.nadimibox.androidfragment;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +19,7 @@ import androidx.fragment.app.FragmentManager;
 /**
  * Developer: Mohamad Nadimi
  * Company: Saghe
- * Website: https://www.mrnadimi.com
+ * Website: https://www.nadimibox.com
  * Created on 29 July 2021
  * <p>
  * Description: ...
@@ -29,6 +31,10 @@ public abstract class LiteFragment extends Fragment {
     private boolean resumed;
     private boolean hidden;
     private boolean viewCreated = false;
+
+    private OnBackPressedCallback callback;
+
+
 
 
     @Override
@@ -60,15 +66,21 @@ public abstract class LiteFragment extends Fragment {
                 return false;
             }
         } );*/
-        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+        //new android back callback
+        callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
                 // Handle the back button event
                 boolean callActivitiesBack = !onBackPressed();
                 if (callActivitiesBack){
                     //Important: https://stackoverflow.com/a/57897677/6098741
+                    //Ba yekbar farakhani disable mishavad
                     setEnabled(false);
-                    requireActivity().onBackPressed();
+                    //requireActivity().onBackPressed();
+                    //new android fragment back
+                    new Handler(Looper.getMainLooper()).post(() -> {
+                        requireActivity().getOnBackPressedDispatcher().onBackPressed();
+                    });
                 }
             }
         };
@@ -135,6 +147,18 @@ public abstract class LiteFragment extends Fragment {
         Log.e("BackPressed" ," "+getClass().getName());
         return false;
     }
+
+
+    public void disableBackCallback(){
+        if (callback == null)return;
+        this.callback.setEnabled(false);
+    }
+
+    public void enableBackCallback(){
+        if (callback == null)return;
+        this.callback.setEnabled(true);
+    }
+
 
     public FragmentActivity getFragmentActivity(){
         return requireActivity();
